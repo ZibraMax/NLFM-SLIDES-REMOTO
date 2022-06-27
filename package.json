@@ -1,0 +1,22 @@
+{
+	"name": "nlfm-slides",
+	"version": "1.0.0",
+	"description": "",
+	"main": "app.js",
+	"directories": {
+		"test": "test"
+	},
+	"scripts": {
+		"start": "node node_modules/reveal-notes-server"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ZibraMax/NLFM-SLIDES-REMOTO.git"
+	},
+	"author": "ZibraMax",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/ZibraMax/NLFM-SLIDES-REMOTO/issues"
+	},
+	"homepage": "https://github.com/ZibraMax/NLFM-SLIDES-REMOTO#readme"
+}
