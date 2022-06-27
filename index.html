@@ -1,0 +1,2768 @@
+<!-- <iframe data-preload  class="iframe-3d " data-src="https://zibramax.github.io/masters-slides/docs/viewer/" scrolling="no" frameborder="0" ></iframe> para meter 3d por el momento-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>Tesis 1 - NL FEM</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link
+			rel="stylesheet"
+			type="text/css"
+			media="screen"
+			href="css/main.css"
+		/>
+		<script src="https://cdn.plot.ly/plotly-2.12.1.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+		<link rel="stylesheet" href="css/reveal.css" />
+		<link rel="stylesheet" href="css/theme/white.css" />
+	</head>
+
+	<body>
+		<div class="reveal">
+			<img
+				style="position: absolute; left: 84%; top: -30px"
+				width="200px"
+				src="https://uniandes.edu.co/sites/default/files/logo-uniandes.png"
+			/>
+			<div class="slides">
+				<section data-auto-animate>
+					<div class="content-indicator">
+						<div class="content-indicator-item">
+							<a 
+								class="hidden-link"
+								style="
+									color: var(--not-selected-color);
+									font-size: 0.8rem;
+									position: fixed;
+									top: 2%;
+									left: -1%;
+								"
+								onclick="simulateKey(83)"
+								>Abrir ventana de notas</a
+							>
+							<a  
+								class="hidden-link"
+								style="
+									color: var(--not-selected-color);
+									font-size: 0.8rem;
+									position: fixed;
+									top: 41%;
+									left: -1%;
+								"
+								onclick="toogleNotes()"
+								>Activar notas al lado</a
+							>
+
+							<a  class="hidden-link" href="#/introduccion-title"
+								>Introducción
+							</a>
+						</div>
+						<div class="content-indicator-item">
+							<a  class="hidden-link" href="#/metodos-title"
+								>Métodos
+							</a>
+						</div>
+						<div class="content-indicator-item">
+							<a  class="hidden-link" href="#/resultados-title"
+								>Resultados
+							</a>
+						</div>
+					</div>
+					<div class="slide">
+						<div>
+							<h3>
+								Aplicabilidad de la teoría de elasticidad no
+								local en comportamiento mecánico de sólidos
+								usando FEM
+							</h3>
+							<p
+								class="text-left two-column"
+								style="
+									font-size: var(--big-size-text);
+									position: absolute;
+									bottom: 0%;
+								"
+							>
+								Arturo Rodriguez<br /><a
+									href="mailto:da.rodriguezh@uniandes.edu.co"
+									style="color: #5c5c5c"
+									>da.rodriguezh@uniandes.edu.co</a
+								>
+							</p>
+							<p
+								class="text-left two-column"
+								style="
+									font-size: var(--big-size-text);
+									position: absolute;
+									bottom: 0%;
+									left: 53%;
+								"
+							>
+								Fernando Ramirez<br /><a
+									href="mailto:f.ramirez@uniandes.edu.co"
+									style="color: #5c5c5c"
+									>f.ramirez@uniandes.edu.co</a
+								>
+							</p>
+						</div>
+					</div>
+					<aside class="notes">
+						Controles:<br />Abrir notas al lado: S<br />Poner
+						pantalla en negro: B<br />Pantalla completa: F11<br /><br />Presentación:
+						Decir nombre de los dos, presentar el título de la
+						presentación y seguir a la siguiente diapositiva
+					</aside>
+				</section>
+				<section data-auto-animate>
+					<section data-auto-animate id="introduccion-title">
+						<div class="content-indicator">
+							<div class="content-indicator-item selected-ci">
+								<a data-id="not-animate"
+									class="hidden-link"
+									href="#/introduccion-title"
+									>Introducción
+								</a>
+							</div>
+							<div class="content-indicator-item">
+								<a data-id="not-animate" class="hidden-link" href="#/metodos-title"
+									>Métodos
+								</a>
+							</div>
+							<div class="content-indicator-item">
+								<a data-id="not-animate" class="hidden-link" href="#/resultados-title"
+									>Resultados
+								</a>
+							</div>
+						</div>
+						<div class="slide">
+							<h1 class="vertical-aligned-title">Introducción</h1>
+						</div>
+						<aside class="notes">Pasar diapositiva rápido</aside>
+					</section>
+
+					<section data-auto-animate>
+						<div class="content-indicator">
+							<div class="content-indicator-item selected-ci">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/introduccion-title"
+									>Introducción
+								</a>
+							</div>
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/metodos-title"
+									>Métodos
+								</a>
+							</div>
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/resultados-title"
+									>Resultados
+								</a>
+							</div>
+						</div>
+						<div class="slide">
+							<h3>
+								<span data-id="box" class="text-focus"
+									>Teoría no local</span
+								>
+							</h3>
+							<div class="two-column">
+								<figure class="figure">
+									<img height="220px" src="./resources/nolocal_cross.jpeg" />
+									<figcaption style="margin-top: -40px;">
+										Interacción de largo alcance entre elementos. Tomado de Pisano et al. (2009)
+									</figcaption>
+								</figure>
+							</div>
+							<div class="two-column">
+								<figure class="figure">
+									<img height="220px" src="./resources/Eringen.jpeg" />
+									<figcaption style="margin-top: -40px;">
+										Comparación entre esfuerzos
+										cortantes producidos por una carga
+										puntual. Tomado de Eringen (1987)
+									</figcaption>
+								</figure>
+							</div>
+							<div class="two-column">
+								<p class="med-text">
+									La teoría clásica no logra predecir el
+									comportamiento a escala nano métrica
+									(Fleck et al., 1994; Stölken & Evans
+									,1998; Ramirez, 2006)
+									\[{\Large\sigma_{ij}=C_{ijkl}\varepsilon_{kl}}\]
+								</p>
+							</div>
+							<div class="two-column">
+								<p class="med-text">
+									Tener en cuenta las fuerzas de cohesión
+									de largo alcance entre partículas
+									(Eringen, 1983)
+									\[{\Large\sigma_{ij}=\int_{\Omega}\alpha(\rho)C_{ijkl}\varepsilon'_{kl}dv'}\]
+								</p>
+							</div>
+						</div>
+						<aside class="notes">
+							<strong>Que es la teoría no local</strong
+							><br /><br />
+							El comportamiento mecánico de materiales en
+							dimensiones muy pequeñas es diferente de su
+							comportamiento a macro escala. Por lo tanto, las
+							teorías clásicas de elasticidad no pueden predecir
+							el comportamiento de los materiales a escala
+							nano métrica. En consecuencia, se han desarrollado
+							varias teorías para predecir el comportamiento
+							mecánico de materiales a nano escala.
+							<br /><br />
+							Una de estas teorías es la teoría no local de
+							elasticidad, desarrollada principalmente por Eringen
+							en 1972. Esta teoría logra incluir los efectos de
+							fuerzas cohesivas de largo alcance en la modelación
+							del medio continuo.
+							<br /><br />
+							<strong>Frase obligatoria</strong>
+							<br /><br />
+							No local es modificación a ley constitutiva.
+						</aside>
+					</section>
+					<section data-auto-animate>
+						<div class="content-indicator">
+							<div class="content-indicator-item selected-ci">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/introduccion-title"
+									>Introducción
+								</a>
+							</div>
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/metodos-title"
+									>Métodos
+								</a>
+							</div>
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/resultados-title"
+									>Resultados
+								</a>
+							</div>
+						</div>
+						<div class="slide">
+							<h3>Teoría no local</h3>
+							<figure class="three-column figure">
+								<div style="width: 100%; height: 224px">
+									<img
+										src="./resources/GORMANI ET AL 2021.jpeg"
+									/>
+								</div>
+								<figcaption style="margin-top: -50px">
+									Pandeo de nanotubos. Tomado de Gormani et
+									al. (2021)
+								</figcaption>
+							</figure>
+							<figure class="three-column figure">
+								<img
+									height="170px"
+									src="./resources/Shariati et al 2021.png"
+								/>
+								<figcaption style="margin-top: -50px">
+									Frecuencias de placa. Tomado de Shariati et
+									al. (2021)
+								</figcaption>
+							</figure>
+							<figure class="three-column figure">
+								<img
+									height="170px"
+									src="./resources/WANG ZHU AND DAI.jpeg"
+								/>
+								<figcaption style="margin-top: -50px">
+									Soluciones para vigas. Tomado de Wang et al.
+									(2016)
+								</figcaption>
+							</figure>
+							<div class="three-column">
+								<p style="text-align: center">
+									Se encontró que la carga crítica de pandeo
+									disminuye cuando se tienen en cuenta los
+									efectos no locales
+								</p>
+							</div>
+							<div class="three-column">
+								<p style="text-align: center">
+									Se compararon las frecuencias de vibración
+									no locales con las encontradas usando
+									dinámica molecular
+								</p>
+							</div>
+							<div class="three-column">
+								<p style="text-align: center">
+									Soluciones analíticas para vigas con
+									distintas condiciones de apoyo. Los
+									desplazamientos aumentan al tener en cuenta
+									no local
+								</p>
+							</div>
+							<h5
+								style="text-transform: none; text-align: center"
+							>
+								Gran costo computacional!
+							</h5>
+						</div>
+						<aside class="notes">
+							<strong>Aplicaciones</strong><br /><br />
+							La teoría no local de elasticidad ha sido aplicada a
+							distintas aplicaciones de ingeniería como: En la
+							figura 1 podemos apreciar un análisis de pandeo en
+							nanotubos de carbono teniendo en cuenta no local,
+							realizado por AUTOR en AÑO. Se encontró que teniendo
+							en cuenta la no localidad disminuía la carga
+							crítica de pandeo de los nanotubos.
+							<br />
+							<br />
+							En la figura 2 podemos apreciar un análisis similar
+							con placas de grafeno. Desarrollado por AUTOR en AÑO
+							demostró cambios en los modos de pandeo para placas.
+							<br />
+							<br />
+							Figura 3: Se han desarrollado varias soluciones
+							analíticas para vigas, obteniendo deflexiones
+							mayores bajo todas las condiciones de borde a
+							excepción de una viga simplemente apoyada, donde se
+							encontraron deflexiones mayores. Entre los autores
+							podemos encontrar a AUTORES.
+							<br />
+							<br />
+							Las figuras 4 y 5 muestran el comportamiento de
+							frecuencias naturales para vigas (nanotubos) y
+							placas (grafeno). Varios estudios se han realizado
+							sobre este tema, siempre limitando el análisis a una
+							y dos dimensiones.
+							<br />
+							<br />
+							La figura 6 es un ejemplo de aplicación con
+							electromagnetismo, donde se encontró que el
+							potencial magnético cambia con respecto a la no
+							localidad
+							<br />
+							<br />
+
+							<strong>Frases obligatorias</strong>
+							<br />
+							La no localidad DISMINUYE la rigidez.
+							<br />
+							Los estudios de frecuencias solo se han realizado en
+							2D y 3D.
+							<br />
+							La mayoría de estos estudios son analíticos.
+						</aside>
+					</section>
+					<section data-auto-animate>
+						<div class="content-indicator">
+							<div class="content-indicator-item selected-ci">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/introduccion-title"
+									>Introducción
+								</a>
+							</div>
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/metodos-title"
+									>Métodos
+								</a>
+							</div>
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/resultados-title"
+									>Resultados
+								</a>
+							</div>
+						</div>
+						<div class="slide">
+							<h1 style="text-transform: none">
+								¿Qué tamaño es suficiente para no tener en
+								cuenta los efectos no locales?
+							</h1>
+						</div>
+						<aside class="notes">
+							<strong>Conclusiones de la introducción</strong
+							><br /><br />
+							Pregunta de investigación.
+						</aside>
+					</section>
+				</section>
+				<section data-auto-animate>
+					<div class="content-indicator">
+						<div class="content-indicator-item selected-ci">
+							<a
+								data-id="not-animate"
+								class="hidden-link"
+								href="#/introduccion-title"
+								>Introducción
+							</a>
+						</div>
+						<div class="content-indicator-item">
+							<a
+								data-id="not-animate"
+								class="hidden-link"
+								href="#/metodos-title"
+								>Métodos
+							</a>
+						</div>
+						<div class="content-indicator-item">
+							<a
+								data-id="not-animate"
+								class="hidden-link"
+								href="#/resultados-title"
+								>Resultados
+							</a>
+						</div>
+					</div>
+					<div class="slide">
+						<h3>Objetivo</h3>
+						<h5 style="text-transform: none">
+							Encontrar el tamaño para el cual no es relevante
+							usar la teoría no local
+						</h5>
+						<div>
+							<figure class="three-column figure">
+								<iframe
+									data-preload
+									class="iframe-3d"
+									data-src="https://zibramax.github.io/masters-slides/docs/viewer/?magnif=10&mesh=https://raw.githubusercontent.com/ZibraMax/NLFM-SLIDES/main/resources/CCube_l_2_000_z1_1_000_L_6_362_nx_8_o0_6.json"
+									scrolling="no"
+									frameborder="0"
+									height="220px"
+								></iframe>
+							</figure>
+							<figure class="three-column figure">
+								<iframe
+									data-preload
+									class="iframe-3d"
+									data-src="https://zibramax.github.io/masters-slides/docs/viewer/?magnif=0.1&mesh=https://raw.githubusercontent.com/ZibraMax/NLFM-SLIDES/main/resources/placa.json"
+									scrolling="no"
+									frameborder="0"
+									height="220px"
+								></iframe>
+							</figure>
+							<figure class="three-column figure">
+								<iframe
+									data-preload
+									class="iframe-3d"
+									data-src="https://zibramax.github.io/masters-slides/docs/viewer/?magnif=0.1&mesh=https://raw.githubusercontent.com/ZibraMax/NLFM-SLIDES/main/resources/viga.json"
+									scrolling="no"
+									frameborder="0"
+									height="220px"
+								></iframe>
+							</figure>
+						</div>
+						<div style="position: absolute; top: 70%">
+							<p>¿Cómo?</p>
+							<ul>
+								<li style="font-size: 1.3rem">
+									Frecuencias para nanopartículas (cubos, esferas o tetraedros)
+								</li>
+								<li style="font-size: 1.3rem">
+									Frecuencias para placas
+								</li>
+								<li style="font-size: 1.3rem">
+									Frecuencias para vigas
+								</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+				<section data-auto-animate>
+					<section data-auto-animate id="metodos-title">
+						<div class="content-indicator">
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/introduccion-title"
+									>Introducción
+								</a>
+							</div>
+							<div class="content-indicator-item selected-ci">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/metodos-title"
+									>Métodos
+								</a>
+							</div>
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/resultados-title"
+									>Resultados
+								</a>
+							</div>
+						</div>
+						<div class="slide">
+							<h1>
+								<span class="vertical-aligned-title"
+									>Metodología</span
+								>
+							</h1>
+						</div>
+						<aside class="notes">Pasar rápido</aside>
+					</section>
+					<section data-auto-animate>
+						<div class="content-indicator">
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/introduccion-title"
+									>Introducción
+								</a>
+							</div>
+							<div class="content-indicator-item selected-ci">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/metodos-title"
+									>Métodos
+								</a>
+							</div>
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/resultados-title"
+									>Resultados
+								</a>
+							</div>
+						</div>
+						<div class="slide">
+							<h3>
+								<span data-id="box">Teoría no local</span
+								><span data-id="box2" class="text-focus">
+									integral</span
+								>
+							</h3>
+							<ul>
+								<li class="med-text">
+									Teoría integral (Eringen & Edelen, 1972)
+								</li>
+								<span
+									>\[\scriptsize{\sigma_{ij}=\int_{\Omega}\alpha(\rho)C_{ijkl}\varepsilon'_{kl}dv'}\]</span
+								>
+								<li class="med-text">
+									Teoría diferencial (Eringen, 1983)
+								</li>
+								<span
+									>\[\scriptsize{(1-e_0a\nabla^2)\sigma_{ij}=C_{ijkl}\varepsilon_{kl}}\]</span
+								>
+								<li class="med-text">
+									Modelo integral de dos fases (Polizzotto,
+									2001)
+								</li>
+								<div
+									data-id="a"
+									class="vertical-aligned-eq"
+									style="top: 76%"
+								>
+									\[\scriptsize{\sigma_{ij}=\zeta_1
+									C_{ijkl}\varepsilon_{kl} +
+									\zeta_2\int_{\Omega}A(\rho)C_{ijkl}\varepsilon'_{kl}dv'}\]
+								</div>
+							</ul>
+						</div>
+						<aside class="notes">
+							<strong>Modelos constitutivos no locales</strong
+							><br /><br />
+							A lo largo de los años, la teoría no local de
+							Eringen ha evolucionado, del modelo original de
+							elasticidad no local se derivan el modelo integral
+							(EQ 1) y la teoría diferencial (EQ 2).
+							<br />
+							<br />
+							La teoría integral es básicamente la teoría original
+							sin aliteraciones, la teoría diferencial es un caso
+							específico de la ecuación constitutiva original que
+							permite una manipulación matemática mas sencilla.
+							<br />
+							<br />
+							Esto ha llevado a que la mayoría de los estudios y
+							comprobaciones de esta teoría se realicen usando el
+							modelo diferencial.
+							<br />
+							<br />
+							Recientemente, se propuso un modelo integral de dos
+							fases, donde el material se modela como un material
+							compuesto que tiene una parte local y una parte no
+							local. Dicho modelo tiene ventajas en su
+							implementación computacional
+							<br />
+							<br />
+							<strong>Frases obligatoria</strong>
+							<br />Las 3 ecuaciones son modelos distintos que
+							provienen de una teoría mas grande<br />
+							<br />Los modelos hijos de no local nunca dan lo
+							mismo. Son teorías distintas<br />
+						</aside>
+					</section>
+					<section data-auto-animate>
+						<div class="content-indicator">
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/introduccion-title"
+									>Introducción
+								</a>
+							</div>
+							<div class="content-indicator-item selected-ci">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/metodos-title"
+									>Métodos
+								</a>
+							</div>
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/resultados-title"
+									>Resultados
+								</a>
+							</div>
+						</div>
+						<div class="slide">
+							<h3>Parámetros del modelo no local</h3>
+							<div data-id="a" class="vertical-aligned-eq">
+								\[\scriptsize{\sigma_{ij}=\zeta_1
+								C_{ijkl}\varepsilon_{kl} +
+								\zeta_2\int_{\Omega}A(\rho)C_{ijkl}\varepsilon'_{kl}dv'}\]
+							</div>
+						</div>
+						<aside class="notes">
+							<strong>Modelo no local</strong><br /><br />
+							Decir: Esta es la ecuación constitutiva del modelo
+							no local integral. Este es el modelo que usaremos
+							para este trabajo. Pasar diapositiva
+						</aside>
+					</section>
+					<section data-auto-animate>
+						<div class="content-indicator">
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/introduccion-title"
+									>Introducción
+								</a>
+							</div>
+							<div class="content-indicator-item selected-ci">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/metodos-title"
+									>Métodos
+								</a>
+							</div>
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/resultados-title"
+									>Resultados
+								</a>
+							</div>
+						</div>
+						<div class="slide">
+							<h3>Parámetros del modelo no local</h3>
+							<div data-id="a" class="vertical-aligned-eq">
+								\[\scriptsize{\sigma_{ij}={\color{lightgray}
+								\zeta_1} C_{ijkl}\varepsilon_{kl}+
+								{\color{lightgray}
+								\zeta_2\int_{\Omega}A(\rho)C_{ijkl}\varepsilon'_{kl}dv'}}\]
+							</div>
+						</div>
+						<aside class="notes">
+							<strong>Modelo no local</strong><br /><br />
+							Decir: El modelo tiene un aporte local. Es la teoría
+							de elasticidad de siempre sin ninguna modificación.
+							Pasar diapositiva
+						</aside>
+					</section>
+					<section data-auto-animate>
+						<div class="content-indicator">
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/introduccion-title"
+									>Introducción
+								</a>
+							</div>
+							<div class="content-indicator-item selected-ci">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/metodos-title"
+									>Métodos
+								</a>
+							</div>
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/resultados-title"
+									>Resultados
+								</a>
+							</div>
+						</div>
+						<div class="slide">
+							<h3>Parámetros del modelo no local</h3>
+							<div data-id="a" class="vertical-aligned-eq">
+								\[{\color{lightgray}\scriptsize{\sigma_{ij}=
+								\zeta_1 C_{ijkl}\varepsilon_{kl}+
+								\zeta_2{\color{black}\int_{\Omega}A(\rho)C_{ijkl}\varepsilon'_{kl}dv'}}}\]
+							</div>
+						</div>
+						<aside class="notes">
+							<strong>Modelo no local</strong><br /><br />
+							Decir: El otro aporte del modelo es la parte no
+							local. En esta ecuación constitutiva aparece una
+							integral sobre el volumen. Esto quiere decir que el
+							estado de esfuerzos de un punto depende de las
+							deformaciones del punto y las deformaciones de todos
+							los otros puntos aledaños del volumen.
+						</aside>
+					</section>
+					<section data-auto-animate>
+						<div class="content-indicator">
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/introduccion-title"
+									>Introducción
+								</a>
+							</div>
+							<div class="content-indicator-item selected-ci">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/metodos-title"
+									>Métodos
+								</a>
+							</div>
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/resultados-title"
+									>Resultados
+								</a>
+							</div>
+						</div>
+						<div class="slide">
+							<h3>Parámetros del modelo no local</h3>
+							<h6>Factor no local</h6>
+
+							<div
+								data-id="a"
+								class="vertical-aligned-eq"
+								style="top: 13%"
+							>
+								\[{\color{lightgray}\scriptsize{\sigma_{ij}=
+								{\color{black}\zeta_1} C_{ijkl}\varepsilon_{kl}+
+								{\color{black}\zeta_2}\int_{\Omega}A(\rho)C_{ijkl}\varepsilon'_{kl}dv'}}\]
+							</div>
+							<br />
+							<div class="two-column">
+								<p>
+									Representa que tanta no localidad se tiene
+									en cuenta
+								</p>
+							</div>
+							<div class="two-column">
+								<div>\[\scriptsize{\zeta_1+\zeta_2=1}\]</div>
+							</div>
+							<div class="fragment">
+								<div class="three-column">
+									<figure class="figure">
+										<iframe
+											data-preload
+											class="iframe-3d"
+											data-src="https://zibramax.github.io/masters-slides/docs/viewer/?magnif=10&mesh=https://raw.githubusercontent.com/ZibraMax/NLFM-SLIDES/main/resources/CCube_l_2_000_z1_1_000_L_6_362_nx_8_o0_6.json"
+											scrolling="no"
+											frameborder="0"
+											height="220px"
+										></iframe>
+										<figcaption>
+											\(\zeta_1=1,\eta=1.78\)
+										</figcaption>
+									</figure>
+								</div>
+								<div class="three-column">
+									<figure class="figure">
+										<iframe
+											data-preload
+											class="iframe-3d"
+											data-src="https://zibramax.github.io/masters-slides/docs/viewer/?magnif=10&mesh=https://raw.githubusercontent.com/ZibraMax/NLFM-SLIDES/main/resources/CCube_l_2_000_z1_0_500_L_6_362_nx_8_o0_6.json"
+											scrolling="no"
+											frameborder="0"
+											height="220px"
+										></iframe>
+										<figcaption>
+											\(\zeta_1=0.5,\eta=1.73\)
+										</figcaption>
+									</figure>
+								</div>
+								<div class="three-column">
+									<figure class="figure">
+										<iframe
+											data-preload
+											class="iframe-3d"
+											data-src="https://zibramax.github.io/masters-slides/docs/viewer/?magnif=5&mesh=https://raw.githubusercontent.com/ZibraMax/NLFM-SLIDES/main/resources/CCube_l_2_000_z1_0_000_L_6_362_nx_8_o0_6.json"
+											scrolling="no"
+											frameborder="0"
+											height="220px"
+										></iframe>
+										<figcaption>
+											\(\zeta_1=0,\eta=0.28\)
+										</figcaption>
+									</figure>
+								</div>
+							</div>
+						</div>
+						<aside class="notes">
+							<strong>Modelo no local</strong><br /><br />
+
+							Dar la tecla espacio y decir: Dichos aportes son
+							ponderados usando los factores zeta (no se
+							pronunciar zeta en griego, no hacer el ridículo.)
+							Dar la tecla espacio
+							<br />
+							Estos factores representan un material compuesto de
+							dos fases, por lo tanto, la suma de los dos factores
+							debe ser 1. Dar espacio
+							<br />
+							Aquí deben salir los 3 modelos 3D. Mover uno de
+							ellos con el mouse
+							<br /><br />
+							En el modelo 1 se ve el primer modo de vibración de
+							un cubo usando la teoría clásica (z1=1)<br />
+							En el modelo 2 se ve el primer modo de vibración de
+							un cubo usando la teoría no local (z1=0.5)<br />
+							En el modelo 3 se ve el primer modo de vibración de
+							un cubo usando (z1=0)<br />
+							<br /><br />
+							<strong>Frases obligatorias</strong>
+							El zeta es muy relevante en la implementación
+							computacional, ya que, de solo tener en cuenta la
+							parte no local (z2=1) se llegan a irregularidades
+							numéricas.
+						</aside>
+					</section>
+					<section data-auto-animate data-state="graficas-pesadas">
+						<div class="content-indicator">
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/introduccion-title"
+									>Introducción
+								</a>
+							</div>
+							<div class="content-indicator-item selected-ci">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/metodos-title"
+									>Métodos
+								</a>
+							</div>
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/resultados-title"
+									>Resultados
+								</a>
+							</div>
+						</div>
+						<div class="slide">
+							<h3>Parámetros del modelo no local</h3>
+							<h6>Función de atenuación</h6>
+							<div
+								data-id="a"
+								class="vertical-aligned-eq"
+								style="top: 13%"
+							>
+								\[{\color{lightgray}\scriptsize{\sigma_{ij}=
+								\zeta_1 C_{ijkl}\varepsilon_{kl}+
+								\zeta_2\int_{\Omega}\color{black}A(\rho)\color{lightgray}C_{ijkl}\varepsilon'_{kl}dv'}}\]
+							</div>
+							<br />
+							<div>
+								<div class="two-column">
+									<p>
+										Representa la relevancia de las fuerzas
+										de cohesión de largo alcance. Depende de
+										la distancia euclidiana (\(|x-x'|\)) y
+										de la longitud interna (\(l\))
+									</p>
+								</div>
+								<div class="two-column">
+									<div data-id="ro">
+										\[\scriptsize{\rho=\frac{|x-x'|}{l}}\]
+									</div>
+								</div>
+							</div>
+							<div
+								class="fragment"
+								style="position: absolute; top: 53%"
+							>
+								<figure
+									class="three-column figure"
+									style="height: 205px"
+									id="atenuacion1"
+								>
+									<figcaption
+										style="text-align: center; padding: 0px"
+									>
+										\(A(\rho)=\lambda_0e^{-\rho}\)
+									</figcaption>
+								</figure>
+								<figure
+									class="three-column figure"
+									style="height: 205px"
+									id="atenuacion2"
+								>
+									<figcaption
+										style="text-align: center; padding: 0px"
+									>
+										\(A(\rho)=\lambda_0\left<1-\frac{\rho}{(1+\Omega_0)}\right>\)
+									</figcaption>
+								</figure>
+								<figure
+									class="three-column figure"
+									style="height: 205px"
+									id="atenuacion3"
+								>
+									<figcaption
+										style="text-align: center; padding: 0px"
+									>
+										\(A(\rho)=\lambda_0\left<1-\frac{\rho^2}{(1+\Omega_0)^2}\right>\)
+									</figcaption>
+								</figure>
+							</div>
+						</div>
+						<aside class="notes">
+							<strong>Modelo no local</strong><br /><br />
+							El siguiente parámetro importante del modelo no
+							local es la función de atenuación. Dar tecla
+							espacio<br />
+							Dicho parámetro pondera la relevancia de los efectos
+							con respecto a la distancia. La función toma como
+							parámetro la distancia euclidiana entre dos puntos
+							(local y no local) normalizada por la longitud
+							interna del material (parámetro no local del
+							material). Dar tecla espacio<br />
+							Las funciones de atenuación toman valores bajos a
+							medidas que el parámetro de distancia aumenta. La
+							idea es que modelen la atenuación de las
+							interacciones entre puntos material a largas
+							distancias.
+						</aside>
+					</section>
+					<section data-auto-animate>
+						<div class="content-indicator">
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/introduccion-title"
+									>Introducción
+								</a>
+							</div>
+							<div class="content-indicator-item selected-ci">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/metodos-title"
+									>Métodos
+								</a>
+							</div>
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/resultados-title"
+									>Resultados
+								</a>
+							</div>
+						</div>
+						<div class="slide">
+							<h3>Parámetros del modelo no local</h3>
+							<h6>Función de atenuación</h6>
+							<div
+								style="position: absolute; top: 10%; left: 30%"
+							>
+								\[A(x,x',l)=\lambda_0e^{-\frac{|x-x'|}{l}}\]
+							</div>
+							<br />
+							<div>
+								<div>
+									<div class="two-column">
+										<p style="padding-top: 30px">
+											El factor \(\lambda_0\) es usado
+											para garantizar las propiedades de
+											la función. Este proceso es distinto
+											para dominios 2D y 3D.
+										</p>
+									</div>
+									<div class="two-column">
+										<div>
+											\[\scriptsize{\lambda_0\int_{\Omega_{\infty}}e^{\frac{-|x-x'|}{l}}d\Omega'=1}\]
+										</div>
+									</div>
+								</div>
+								<div>
+									<div class="two-column fragment">
+										<h5 style="text-align: center">2D</h5>
+										<p>
+											\[\small\lambda_0\int_{\Omega_{\infty}}e^{\frac{-|x-x'|}{l}}d\Omega'=t\lambda_0\int_{0}^{\infty}\int_{0}^{2\pi}re^{\frac{-r}{l}}{d\theta}{dr}\]
+										</p>
+										<p>
+											\[\small\lambda_0\int_{\Omega_{\infty}}e^{\frac{-|x-x'|}{l}}d\Omega'=\lambda_02\pi
+											l^2t\]
+										</p>
+										<p>
+											\[\small\lambda_0=\frac{1}{2\pi
+											l^2t}\]
+										</p>
+									</div>
+									<div class="two-column fragment">
+										<h5 style="text-align: center">3D</h5>
+										<p>
+											\[...=\lambda_0\int_{0}^{\infty}\int_{0}^{2\pi}\int_{0}^{\pi}r^2\sin(\phi)e^{\frac{-r}{l}}{d\phi}{d\theta}{dr}\]
+										</p>
+										<p>\[...=\lambda_0 8\pi l^3\]</p>
+										<p>\[\lambda_0=\frac{1}{8\pi l^3}\]</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<aside class="notes">
+							<strong>Modelo no local</strong><br /><br />
+							En resumen, la función de atenuación solamente
+							depende de un punto local, un punto no local y la
+							longitud interna del material. Presionar tecla
+							espacio<br />
+							Las funciones de atenuación tienen que cumplir con
+							la condición de que la integral bajo un dominio
+							infinito sea 1. Esto garantiza la conservación de la
+							energía del método.<br />
+							Dado que esta condición no se cumple con la función
+							bi exponencial, es necesario aplicar un factor de
+							corrección lambda0.<br />
+							El procedimiento de encontrar dicho factor depende
+							de la dimensión del modelo. Para este caso se
+							muestra el proceso del caso bidimensional y
+							tridimensional. Dar tecla espacio hasta terminar
+							diapositiva
+							<br />
+							<br />
+							<strong>Frases obligatorias</strong>
+							<br />
+							<br />
+							La integral es impropia por el dominio infinito y
+							converge por la exponencial
+						</aside>
+					</section>
+					<section data-auto-animate>
+						<div class="content-indicator">
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/introduccion-title"
+									>Introducción
+								</a>
+							</div>
+							<div class="content-indicator-item selected-ci">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/metodos-title"
+									>Métodos
+								</a>
+							</div>
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/resultados-title"
+									>Resultados
+								</a>
+							</div>
+						</div>
+						<div class="slide">
+							<h3>Modelo de elementos finitos</h3>
+							<h6>FEM general</h6>
+							<p>
+								Para implementar elementos finitos es necesario
+								seguir una serie de pasos
+							</p>
+							<ol class="fragment">
+								<li>Enmallado (pre proceso)</li>
+								<li
+									data-id="titulito"
+									style="
+										text-transform: none;
+										font-size: var(--big-size-text);
+									"
+								>
+									Formulación variacional/Forma débil
+								</li>
+								<li>Matrices y vectores de elementos</li>
+								<li>Ensamblaje de sistema de ecuaciones</li>
+								<li>Condiciones de borde</li>
+								<li>Solución del sistema de ecuaciones</li>
+								<li>Gráficas y productos (post proceso)</li>
+							</ol>
+						</div>
+						<aside class="notes">
+							<strong>FEM local</strong><br /><br />
+							Pero ¿cómo implementamos este modelo constitutivo?.
+							La respuesta es elementos finitos. Oprimir tecla
+							espacio<br />
+							En un caso general, elementos finitos tiene 7 pasos
+							<br />
+							<br />
+							<strong>Frases obligatorias</strong>
+							<br />
+							<br />
+							Especificar que la cantidad de pasos no es
+							obligatoriamente esta, que depende del modelo y del
+							libro de donde se saque el método
+						</aside>
+					</section>
+					<section data-auto-animate>
+						<div class="content-indicator">
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/introduccion-title"
+									>Introducción
+								</a>
+							</div>
+							<div class="content-indicator-item selected-ci">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/metodos-title"
+									>Métodos
+								</a>
+							</div>
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/resultados-title"
+									>Resultados
+								</a>
+							</div>
+						</div>
+						<div class="slide">
+							<h3>Modelo de elementos finitos</h3>
+							<h6>FEM no local</h6>
+							<p>
+								Para implementar elementos finitos es necesario
+								seguir una serie de pasos
+							</p>
+							<ol>
+								<li style="color: var(--not-selected-color)">
+									Enmallado (pre proceso)
+								</li>
+								<li style="color: var(--red)">
+									Detección elementos no locales
+								</li>
+								<li style="color: var(--red)">
+									<h4
+										data-id="titulito"
+										style="
+											text-transform: none;
+											font-size: var(--big-size-text);
+											color: var(--red);
+										"
+									>
+										Formulación variacional/Forma débil
+									</h4>
+								</li>
+								<li style="color: var(--red)">
+									Matrices y vectores de elementos
+								</li>
+								<li style="color: var(--red)">
+									Ensamblaje de sistema de ecuaciones
+								</li>
+								<li style="color: var(--not-selected-color)">
+									Condiciones de borde
+								</li>
+								<li style="color: var(--not-selected-color)">
+									Solución del sistema de ecuaciones
+								</li>
+								<li style="color: var(--not-selected-color)">
+									Gráficas y productos (post proceso)
+								</li>
+							</ol>
+						</div>
+						<aside class="notes">
+							<strong>FEM no local</strong><br /><br />
+							Para implementar elasticidad no local en elementos
+							finitos solamente hace falta cambiar 3 pasos del
+							método y agregar uno.
+							<br />
+							<br />
+						</aside>
+					</section>
+					<section data-auto-animate>
+						<div class="content-indicator">
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/introduccion-title"
+									>Introducción
+								</a>
+							</div>
+							<div class="content-indicator-item selected-ci">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/metodos-title"
+									>Métodos
+								</a>
+							</div>
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/resultados-title"
+									>Resultados
+								</a>
+							</div>
+						</div>
+						<div class="slide">
+							<h4 data-id="titulito">
+								Formulación variacional/Forma débil
+							</h4>
+							<p>
+								Se parte del modelo integral de dos fases y la
+								ecuación de movimiento:
+								$$\small\sigma_{ij}=\zeta_1
+								C_{ijkl}\varepsilon_{kl} +
+								\zeta_2\int_{\Omega}A(\rho)C_{ijkl}\varepsilon'_{kl}dv'\\
+								\sigma_{ij,j}+f_i=0$$
+							</p>
+							<p class="fragment">
+								Sustituyendo el modelo constitutivo en la
+								ecuación de movimiento e integrando sobre el
+								volumen ponderadamente (FEM) se obtiene:
+								$$\small\int_{v}w\left(\frac{\partial}{\partial
+								x_j}\left(\zeta_1 C_{ijkl}\varepsilon_{kl} +
+								\zeta_2\int_{\Omega}A(\rho)C_{ijkl}\varepsilon'_{kl}dv'\right)+f_i\right)dv=0$$
+							</p>
+							<p class="fragment">
+								Integrando por partes se puede llegar a
+								expresiones para la matriz de rigidez de un
+								elemento: $$\small K^e=\zeta_1\int_v B^T(x) C
+								B(x)dv+\zeta_2\int_v\int_{v'} A(\rho) B^T(x) C
+								B(x')dv'dv$$ En esta expresión la matriz \(B\)
+								hace referencia a las derivadas de las funciones
+								de forma y la matriz \(C\) al tensor de
+								elasticidad del material
+							</p>
+						</div>
+						<aside class="notes">
+							<strong>FEM no local</strong><br /><br />
+							El proceso de formulación variacional para la parte
+							local es la misma que se realiza en la teoría
+							clásica, por lo tanto, aquí solo se muestra el
+							proceso para la parte no local. Oprimir tecla
+							espacio
+							<br />
+							En este caso el proceso se realiza por medio del
+							potencial de energía total, sin embargo, este mismo
+							proceso puede realizarse con la forma débil de la
+							ecuación diferencial. Presionar tecla espacio
+							<br />
+							De la parte no local se puede llegar a una expresión
+							para una matriz de rigidez no local. Esta doble
+							integral quiere decir que la integral es cruzada
+							entre el dominio local y el dominio no local
+						</aside>
+					</section>
+
+					<section data-auto-animate data-state="graficas-atenu2d">
+						<div class="content-indicator">
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/introduccion-title"
+									>Introducción
+								</a>
+							</div>
+							<div class="content-indicator-item selected-ci">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/metodos-title"
+									>Métodos
+								</a>
+							</div>
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/resultados-title"
+									>Resultados
+								</a>
+							</div>
+						</div>
+						<div class="slide">
+							<h4 data-id="titulito">
+								Detección de elementos no locales
+							</h4>
+							<figure
+								id="grafica-atenuacion-2d"
+								class="three-column figure"
+								style="height: 245px"
+							>
+								<figcaption>
+									Función de atenuación biexponencial en 1D
+								</figcaption>
+							</figure>
+							<figure
+								class="three-column figure"
+								style="text-align: center"
+							>
+								<img
+									data-id="imagen2d"
+									height="230px"
+									src="./resources/deteccion_no_local1.8.svg"
+								/>
+								<figcaption style="margin-top: -40px">
+									Distancia Lr a nivel de elementos 2D
+								</figcaption>
+							</figure>
+							<figure
+								class="three-column figure"
+								style="text-align: center"
+							>
+								<img
+									height="230px"
+									src="./resources/deteccion_no_local_3D.svg"
+								/>
+								<figcaption style="margin-top: -40px">
+									Función de atenuación sobre elementos a una
+									distancia Lr
+								</figcaption>
+							</figure>
+							<div style="position: absolute; top: 65%">
+								<p>
+									Dado que \(\rho\) se calcula como la
+									distancia entre dos puntos, mientras mas
+									lejos estén, menos importancia tienen
+								</p>
+								<p>
+									Elementos lejanos, tendrán \(\rho\approx
+									0\), por lo tanto, solamente se
+									necesitan tener en cuenta los elementos a
+									una distancia < \(Lr=6l\) (Polizzotto, 2001)
+								</p>
+							</div>
+						</div>
+						<aside class="notes">
+							<strong>FEM no local</strong><br /><br />
+							Al poner la función de atenuación sobre esta región,
+							se puede observar que dicha función casi no tiene
+							relevancia en los elementos mas lejanos, por lo que
+							las matrices de dichos elementos son cercanas a cero
+							y no aportan efectos no locales
+						</aside>
+					</section>
+
+					<section data-auto-animate>
+						<div class="content-indicator">
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/introduccion-title"
+									>Introducción
+								</a>
+							</div>
+							<div class="content-indicator-item selected-ci">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/metodos-title"
+									>Métodos
+								</a>
+							</div>
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/resultados-title"
+									>Resultados
+								</a>
+							</div>
+						</div>
+						<div class="slide">
+							<h4 data-id="titulito">
+								Ensamblaje de sistema de ecuaciones
+							</h4>
+							<div
+								style="position: absolute; top: 8%; width: 100%"
+							>
+								<figure
+									class="figure"
+									style="
+										text-align: center;
+										height: 280px;
+										width: 30%;
+										float: left;
+									"
+								>
+									<img
+										src="./resources/conect_nloc1.svg"
+										height="200px"
+									/>
+									<figcaption
+										style="padding: 0px; margin-top: -25px"
+									>
+										Elemento local y no local
+									</figcaption>
+								</figure>
+								<div
+									style="
+										padding-top: 45px;
+										text-align: center;
+										height: 240px;
+										width: 60%;
+										float: left;
+									"
+								>
+									<p style="text-align: center">
+										$$\small K^{nm}_{nl}=\begin{bmatrix} 300
+										& 125 & 425 & 28 \\ 125 & 250 & 542 &
+										425 \\ 425 & 542 & 250 & 125 \\ 28 & 425
+										& 125 & 300 \end{bmatrix} $$
+									</p>
+								</div>
+							</div>
+							<div
+								style="
+									position: absolute;
+									top: 48%;
+									width: 100%;
+								"
+							>
+								<figure
+									class="figure"
+									style="
+										text-align: center;
+										height: 240px;
+										width: 30%;
+										float: left;
+									"
+								>
+									<img
+										src="./resources/conect_nloc2.svg"
+										height="240px"
+									/>
+									<figcaption
+										style="padding: 0px; margin-top: -25px"
+									>
+										Dominio de elementos finitos de ejemplo
+									</figcaption>
+								</figure>
+
+								<div
+									style="
+										text-align: center;
+										height: 240px;
+										width: 60%;
+										float: left;
+									"
+								>
+									<p style="text-align: center">
+										$$\small K=\begin{bmatrix}
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} \\
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{black}300} & {\color{black}125}
+										& {\color{lightgray}x} &
+										{\color{black}425} & {\color{black}28} &
+										{\color{lightgray}x} \\
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{black}125} & {\color{black}250}
+										& {\color{lightgray}x} &
+										{\color{black}542} & {\color{black}425}
+										& {\color{lightgray}x} \\
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} \\
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{black}425} & {\color{black}542}
+										& {\color{lightgray}x} &
+										{\color{black}250} & {\color{black}125}
+										& {\color{lightgray}x} \\
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} & {\color{black}28}
+										& {\color{black}425} &
+										{\color{lightgray}x} &
+										{\color{black}125} & {\color{black}300}
+										& {\color{lightgray}x} \\
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} \\
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} \\
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} &
+										{\color{lightgray}x} \end{bmatrix} $$
+									</p>
+								</div>
+							</div>
+						</div>
+						<aside class="notes">
+							<strong>FEM no local</strong><br /><br />
+							En el caso no local, dado que las integrales se
+							realizan cruzadas entre elementos, el ensamblaje de
+							la matriz se realiza con los grados de libertad del
+							elemento local y los grados de libertad del elemento
+							no local. En este caso, los grados de libertad
+							2,3,5,6 y 4,5,7,8. Las matrices son simétricas, por
+							lo que los datos que aparecen en la segunda matriz
+							se repetirán en el sentido contrario.
+						</aside>
+					</section>
+
+					<section data-auto-animate>
+						<div class="content-indicator">
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/introduccion-title"
+									>Introducción
+								</a>
+							</div>
+							<div class="content-indicator-item selected-ci">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/metodos-title"
+									>Métodos
+								</a>
+							</div>
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/resultados-title"
+									>Resultados
+								</a>
+							</div>
+						</div>
+						<div class="slide">
+							<h4 data-id="titulito">
+								Proceso de elementos finitos completo
+							</h4>
+							<figure class="figure">
+								<img
+									height="430px"
+									src="./resources/dffem.svg"
+								/>
+								<figcaption>
+									Diagrama de flujo del proceso de elementos
+									finitos no local
+								</figcaption>
+							</figure>
+						</div>
+						<aside class="notes">
+							<strong>FEM no local</strong><br /><br />
+							El proceso de elementos finitos se resume en le
+							siguiente proceso
+						</aside>
+					</section>
+
+					<section data-auto-animate>
+						<div class="content-indicator">
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/introduccion-title"
+									>Introducción
+								</a>
+							</div>
+							<div class="content-indicator-item selected-ci">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/metodos-title"
+									>Métodos
+								</a>
+							</div>
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/resultados-title"
+									>Resultados
+								</a>
+							</div>
+						</div>
+						<div class="slide">
+							<h4 data-id="titulito">
+								Validación de la implementación
+							</h4>
+							<p>
+								La implementación del método se encuentra en un
+								repositorio de GitHub:
+								<a class="hidden-link" style="color: var(--red)"
+									>https://github.com/ZibraMax/FEM</a
+								>
+							</p>
+							<div style="float: left; width: 100%">
+								<figure class="figure">
+									<img
+										height="170px"
+										src="./resources/Dominio.jpeg"
+									/>
+									<figcaption
+										style="padding: 0px; margin-top: -30px"
+									>
+										Modelo objetivo. Adaptado de Pisano et
+										al. (2009)
+									</figcaption>
+								</figure>
+							</div>
+							<div style="float: left; width: 100%">
+								<div class="two-column">
+									<figure class="figure">
+										<img
+											width="350px"
+											src="./resources/y_2519.jpeg"
+										/>
+										<figcaption
+											style="
+												padding: 0px;
+												margin-top: -30px;
+											"
+										>
+											Comparación de \(\varepsilon_x\) para
+											\(y=2.519\)
+										</figcaption>
+									</figure>
+								</div>
+								<div class="two-column">
+									<figure class="figure">
+										<img
+											width="350px"
+											src="./resources/x_0019.jpeg"
+										/>
+										<figcaption
+											style="
+												padding: 0px;
+												margin-top: -30px;
+											"
+										>
+											Comparación de \(\varepsilon_x\)
+											para \(x=0.019\)
+										</figcaption>
+									</figure>
+								</div>
+							</div>
+						</div>
+						<aside class="notes">
+							<strong>FEM no local</strong><br /><br />
+							Hablar de Pisano, de como se calibró el programa
+						</aside>
+					</section>
+
+					<section data-auto-animate>
+						<div class="content-indicator">
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/introduccion-title"
+									>Introducción
+								</a>
+							</div>
+							<div class="content-indicator-item selected-ci">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/metodos-title"
+									>Métodos
+								</a>
+							</div>
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/resultados-title"
+									>Resultados
+								</a>
+							</div>
+						</div>
+						<div class="slide">
+							<div class="three-column">
+								<figure class="figure">
+									<img
+										src="./resources/deteccion_no_local1.svg"
+									/>
+									<figcaption
+										style="padding: 0px; margin-top: -30px"
+									>
+										Elementos no locales de un dominio de 5
+										elementos por lado
+									</figcaption>
+								</figure>
+							</div>
+							<div class="three-column">
+								<figure class="figure">
+									<img
+										src="./resources/deteccion_no_local3.svg"
+									/>
+									<figcaption
+										style="padding: 0px; margin-top: -30px"
+									>
+										Elementos no locales de un dominio de 15
+										elementos por lado
+									</figcaption>
+								</figure>
+							</div>
+							<div class="three-column">
+								<figure class="figure">
+									<img
+										src="./resources/deteccion_no_local5.svg"
+									/>
+									<figcaption
+										style="padding: 0px; margin-top: -30px"
+									>
+										Elementos no locales de un dominio de 25
+										elementos por lado
+									</figcaption>
+								</figure>
+							</div>
+							<h4 style="text-transform: none; margin-top: 380px">
+								¿Qué tamaño hace que los efectos no locales sean
+								despreciables?
+							</h4>
+						</div>
+						<aside class="notes">
+							<strong>FEM no local</strong><br /><br />
+							Pregunta de investigación de nuevo. No se que tan
+							relevante sea aquí
+						</aside>
+					</section>
+					<section data-auto-animate>
+						<div class="content-indicator">
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/introduccion-title"
+									>Introducción
+								</a>
+							</div>
+							<div class="content-indicator-item selected-ci">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/metodos-title"
+									>Métodos
+								</a>
+							</div>
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/resultados-title"
+									>Resultados
+								</a>
+							</div>
+						</div>
+						<div class="slide">
+							<h3>Simulaciones propuestas</h3>
+
+							<figure class="three-column figure">
+								<iframe
+									data-preload
+									class="iframe-3d"
+									data-src="https://zibramax.github.io/masters-slides/docs/viewer/?magnif=10&mesh=https://raw.githubusercontent.com/ZibraMax/NLFM-SLIDES/main/resources/CCube_l_2_000_z1_1_000_L_6_362_nx_8_o0_6.json"
+									scrolling="no"
+									frameborder="0"
+									height="220px"
+								></iframe>
+								<figcaption>
+									Cubo de lado \(R\)
+								</figcaption>
+							</figure>
+							<figure class="three-column figure">
+								<iframe
+									data-preload
+									class="iframe-3d"
+									data-src="https://zibramax.github.io/masters-slides/docs/viewer/?magnif=0.1&mesh=https://raw.githubusercontent.com/ZibraMax/NLFM-SLIDES/main/resources/placa.json"
+									scrolling="no"
+									frameborder="0"
+									height="220px"
+								></iframe>
+								<figcaption>
+									Placa cuadrada de lado \(R\)
+								</figcaption>
+							</figure>
+							<figure class="three-column figure">
+								<iframe
+									data-preload
+									class="iframe-3d"
+									data-src="https://zibramax.github.io/masters-slides/docs/viewer/?magnif=0.1&mesh=https://raw.githubusercontent.com/ZibraMax/NLFM-SLIDES/main/resources/viga.json"
+									scrolling="no"
+									frameborder="0"
+									height="220px"
+								></iframe>
+								<figcaption>Viga de longitud \(R\)</figcaption>
+							</figure>
+							<div style="position: absolute; top: 60%">
+								<p>Con cada geometría:</p>
+								<ul>
+									<li class="med-text">
+										Se varían los parámetros no locales
+										\(l\) y \(\zeta_1\)
+									</li>
+									<li class="med-text">
+										Se cambia la distancia \(R\)
+									</li>
+									<li class="med-text">
+										Se prueba con distintos materiales
+									</li>
+								</ul>
+								<p>
+									Para cada caso se calcula la primera
+									frecuencia natural \(\omega\) usando teoría
+									no local y la teoría no local
+								</p>
+							</div>
+						</div>
+						<aside class="notes">
+							<strong>Metodología final</strong><br /><br />
+							Recalcar que se busca encontrar la frecuencia
+							natural de nanoestructuras de distintas geometrías.
+							Mostrar las distintas geometrías (modelos 3D) y
+							especificar donde se encuentra la longitud del
+							dominio.
+							<br />
+							Mencionar que los parámetros a variar se
+							especificarán en la sección de resultados
+						</aside>
+					</section>
+
+					<section data-auto-animate>
+						<div class="content-indicator">
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/introduccion-title"
+									>Introducción
+								</a>
+							</div>
+							<div class="content-indicator-item selected-ci">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/metodos-title"
+									>Métodos
+								</a>
+							</div>
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/resultados-title"
+									>Resultados
+								</a>
+							</div>
+						</div>
+						<div class="slide">
+							<h3>Análisis de frecuencias normalizadas</h3>
+							<p>
+								Para comparar entre resultados se usa la
+								frecuencia normalizada (\(\eta \) )
+								$$\eta=\frac{\omega R}{C_t}$$
+							</p>
+							<p>
+								Donde \(C_t\) es la velocidad de la onda de
+								corte
+							</p>
+							<p>
+								Para cada simulación se realizan los siguientes
+								pasos
+							</p>
+							<ol>
+								<li class="med-text">
+									Se calcula la frecuencia normalizada con la
+									teoría no local \(\eta_{nl}\)
+								</li>
+								<li class="med-text">
+									Se calcula la frecuencia normalizada con la
+									teoría local \(\eta_{l}\)
+								</li>
+								<li class="med-text">
+									Se calcula la diferencia relativa entre las
+									frecuencias
+								</li>
+								<p>
+									$$\Delta=\left|\frac{\eta_{nl}-\eta_{l}}{\eta_{l}}\right|$$
+								</p>
+								<li class="med-text">
+									Si \(\Delta>5\%\) aumentar el tamaño \(R\)
+								</li>
+							</ol>
+						</div>
+						<aside class="notes">
+							<strong>Metodología final</strong><br /><br />
+							Para poder comparar entre resultados se usa una
+							normalización de la frecuencia. Esta normalización
+							asegura que cambiando el tamaño de la nanoestructura
+							\(R\), la frecuencia local se mantiene constante.<br />
+							Se busca evaluar la diferencia relativa entre la
+							frecuencia local y frecuencia no local hasta que la
+							diferencia relativa sea menor al 5%. Para disminuir
+							esa diferencia se aumenta el tamaño de la
+							nanopartícula hasta lograr el objetivo
+						</aside>
+					</section>
+					<section data-auto-animate>
+						<div class="content-indicator">
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/introduccion-title"
+									>Introducción
+								</a>
+							</div>
+							<div class="content-indicator-item selected-ci">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/metodos-title"
+									>Métodos
+								</a>
+							</div>
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/resultados-title"
+									>Resultados
+								</a>
+							</div>
+						</div>
+						<div class="slide">
+							<h3>Materiales</h3>
+							<div class="three-column" style="height: 150px">
+								<h4>Carbono</h4>
+								<p>\(\rho=3.515\ g/cm^3\)</p>
+							</div>
+							<div style="height: 150px; float: left; width: 60%">
+								<p>
+									$$\scriptsize C=\begin{bmatrix} 1280.0 &
+									124.0 & 124.0 & 0 & 0 & 0 \\ 124.0 & 1280.0
+									& 124.0 & 0 & 0 & 0 \\ 124.0 & 124.0 &
+									1280.0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 578.0 & 0
+									& 0 \\ 0 & 0 & 0 & 0 & 578.0 & 0 \\ 0 & 0 &
+									0 & 0 & 0 & 578.0 \end{bmatrix}\ MPa$$
+								</p>
+							</div>
+
+							<div class="three-column" style="height: 150px">
+								<h4>Silicio</h4>
+								<p>\(\rho=2.329\ g/cm^3\)</p>
+							</div>
+							<div style="height: 150px; float: left; width: 60%">
+								<p>
+									$$\scriptsize C=\begin{bmatrix} 223.1 & 63.9
+									& 63.9 & 0 & 0 & 0 \\ 63.9 & 223.1 & 63.9 &
+									0 & 0 & 0 \\ 63.9 & 63.9 & 223.1 & 0 & 0 & 0
+									\\ 0 & 0 & 0 & 79.6 & 0 & 0 \\ 0 & 0 & 0 & 0
+									& 79.6 & 0 \\ 0 & 0 & 0 & 0 & 0 & 79.6
+									\end{bmatrix}\ MPa$$
+								</p>
+							</div>
+
+							<div class="three-column" style="height: 150px">
+								<h4>Germanio</h4>
+								<p>\(\rho=5.323\ g/cm^3\)</p>
+							</div>
+							<div style="height: 150px; float: left; width: 60%">
+								<p>
+									$$\scriptsize C=\begin{bmatrix} 182.5 & 48.3
+									& 48.3 & 0 & 0 & 0 \\ 48.3 & 182.5 & 48.3 &
+									0 & 0 & 0 \\ 48.3 & 48.3 & 182.5 & 0 & 0 & 0
+									\\ 0 & 0 & 0 & 67.1 & 0 & 0 \\ 0 & 0 & 0 & 0
+									& 67.1 & 0 \\ 0 & 0 & 0 & 0 & 0 & 67.1
+									\end{bmatrix}\ MPa$$
+								</p>
+							</div>
+						</div>
+						<aside class="notes">
+							<strong>Metodología final</strong><br /><br />
+							Mencionar los 3 materiales que se usarán para las
+							simulaciones. Mencionar que para replicabilidad se
+							proporciona el tensor de rigidez<br /><br />Quisiera
+							poner aquí modelos 3D del cristal para cada material
+						</aside>
+					</section>
+
+					<section data-auto-animate>
+						<div class="content-indicator">
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/introduccion-title"
+									>Introducción
+								</a>
+							</div>
+							<div class="content-indicator-item selected-ci">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/metodos-title"
+									>Métodos
+								</a>
+							</div>
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/resultados-title"
+									>Resultados
+								</a>
+							</div>
+						</div>
+						<div class="slide">
+							<h3>Procedimiento</h3>
+							<figure class="figure">
+								<img
+									src="./resources/dfmetodos.svg"
+									height="430px"
+								/>
+								<figcaption>
+									Diagrama de flujo completo
+								</figcaption>
+							</figure>
+						</div>
+						<aside class="notes">
+							<strong>Metodología final</strong><br /><br />
+							Mostar el resumen del proceso en el diagrama de
+							flujo completo
+						</aside>
+					</section>
+				</section>
+				<section data-auto-animate>
+					<section data-auto-animate id="resultados-title">
+						<div class="content-indicator">
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/introduccion-title"
+									>Introducción
+								</a>
+							</div>
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/metodos-title"
+									>Métodos
+								</a>
+							</div>
+							<div class="content-indicator-item selected-ci">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/resultados-title"
+									>Resultados
+								</a>
+							</div>
+						</div>
+						<div class="slide">
+							<h1>
+								<span class="vertical-aligned-title"
+									>Resultados Preliminares</span
+								>
+							</h1>
+						</div>
+						<aside class="notes">
+							<strong>Resultados</strong><br /><br />
+							Pasar rápido
+						</aside>
+					</section>
+					<section
+						data-auto-animate
+						data-state="graficas-resultados-1"
+					>
+						<div class="content-indicator">
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/introduccion-title"
+									>Introducción
+								</a>
+							</div>
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/metodos-title"
+									>Métodos
+								</a>
+							</div>
+							<div class="content-indicator-item selected-ci">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/resultados-title"
+									>Resultados
+								</a>
+							</div>
+						</div>
+						<div class="slide">
+							<h3>Frecuencias normalizadas para cubos</h3>
+							<figure class="figure">
+								<div
+									id="grafica_res_1"
+									style="width: 100%; height: 430px"
+								></div>
+								<figcaption>
+									Frecuencias para cubos usando teoría no
+									local con \(l=2,\zeta_1=0.5\)
+								</figcaption>
+							</figure>
+						</div>
+						<aside class="notes">
+							<strong>Resultados</strong><br /><br />
+							En esta gráfica apreciamos el comportamiento de las
+							frecuencias naturales normalizadas para los tres
+							materiales mencionados anteriormente. Se muestra la
+							frecuencia local.
+
+							<strong>Frase oligatoria</strong>
+							Al normalizar las frecuencia naturales, los tres
+							materiales presentan el mismo comportamiento, por lo
+							tanto, se puede asegurar que: Pasar a la siguiente
+							diapositiva
+						</aside>
+					</section>
+					<section data-auto-animate>
+						<div class="content-indicator">
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/introduccion-title"
+									>Introducción
+								</a>
+							</div>
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/metodos-title"
+									>Métodos
+								</a>
+							</div>
+							<div class="content-indicator-item selected-ci">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/resultados-title"
+									>Resultados
+								</a>
+							</div>
+						</div>
+						<div class="slide">
+							<h3>
+								Parámetros usados en las simulaciones de cubos
+							</h3>
+							<ul>
+								<li class="med-text">Longitud interna \(l\)</li>
+								<p>Se usan valores de \(l = 0.1,0.5,1,2,5\)</p>
+								<li class="med-text">Tamaño \(R\)</li>
+								<p>
+									Se usan valores de \(R =
+									10l,15l,20l,50l,100l\)
+								</p>
+								<li class="med-text">
+									Factor no local \(\zeta_1\)
+								</li>
+								<p>
+									Se usan valores de \(\zeta_1 =
+									0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.9,1.0\)
+								</p>
+								<li class="med-text">Material</li>
+								<p>
+									Se puede usar cualquiera, en este caso,
+									carbono.
+								</p>
+							</ul>
+						</div>
+						<aside class="notes">
+							<strong>Resultados</strong><br /><br />
+							Quitando el material como variable, se planea
+							realizar simulaciones de cubos usando los siguientes
+							parámetros no locales.
+						</aside>
+					</section>
+					<section
+						data-auto-animate
+						data-state="graficas-pesadas-res-2"
+					>
+						<div class="content-indicator">
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/introduccion-title"
+									>Introducción
+								</a>
+							</div>
+							<div class="content-indicator-item">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/metodos-title"
+									>Métodos
+								</a>
+							</div>
+							<div class="content-indicator-item selected-ci">
+								<a
+									data-id="not-animate"
+									class="hidden-link"
+									href="#/resultados-title"
+									>Resultados
+								</a>
+							</div>
+						</div>
+						<div class="slide">
+							<h4>
+								Diferencia relativa de frecuencias no locales
+							</h4>
+							<div style="width: 70%; float: left">
+								<figure style="width: 100%">
+									<div
+										id="grafica_res_2"
+										style="width: 100%"
+									></div>
+									<figcaption>
+										Resultados para frecuencias normalizadas
+										de cubos (\(l=2,\zeta_1=0.5\))
+									</figcaption>
+								</figure>
+							</div>
+							<div
+								style="
+									width: 30%;
+									position: absolute;
+									top: 25%;
+									left: 75%;
+								"
+							>
+								<p>
+									Ajuste lineal con los primeros 5 puntos
+									$$\eta=1.73-2.84\frac{1}{R}$$ Por lo tanto:
+									$$\Delta=\left|\frac{1.73-2.84\frac{1}{R}-1.78}{1.78}\right|\%$$
+									Para conseguir $\Delta=5\%$ es necesario:
+									$$R=34l$$
+								</p>
+							</div>
+						</div>
+						<aside class="notes">
+							<strong>Resultados</strong><br /><br />
+							Hablar del comportamiento de las frecuencias locales
+							vs las no locales. Explicar que la lina recta es
+							gracias a la normalización y que la linea punteada
+							es la obtenida por Fernando usando dinamica
+							molecular para el carbono.
+
+							<br />
+							Explicar que los ultimos dos puntos pertenecen a 60
+							veces l y 30 veces l, por lo que aproximadamente en
+							35 veces l se espera tener una variacion menor al 5%
+						</aside>
+					</section>
+					<section
+					data-auto-animate
+					data-state="graficas-pesadas-res-2"
+				>
+					<div class="content-indicator">
+						<div class="content-indicator-item">
+							<a
+								data-id="not-animate"
+								data-id="not-animate"
+								class="hidden-link"
+								href="#/introduccion-title"
+								>Introducción
+							</a>
+						</div>
+						<div class="content-indicator-item">
+							<a
+								data-id="not-animate"
+								data-id="not-animate"
+								class="hidden-link"
+								href="#/metodos-title"
+								>Métodos
+							</a>
+						</div>
+						<div class="content-indicator-item selected-ci">
+							<a
+								data-id="not-animate"
+								class="hidden-link"
+								href="#/resultados-title"
+								>Resultados
+							</a>
+						</div>
+					</div>
+					<div class="slide">
+						<h4>
+							Avance
+						</h4>
+						<ol>
+							<li>Programa<span class="fragment" data-fragment-index="1">✅</span></li>
+							<li>Validación<span class="fragment" data-fragment-index="2">✅</span></li>
+							<li>Simulaciones para frecuencias <span class="fragment" style="color:var(--red)" data-fragment-index="4">(1 mes)</span>
+								<ul>
+									<li>Cubos<span class="fragment" data-fragment-index="3">✅</span></li>
+									<li>Tetraedros</li>
+									<li>Esferas</li>
+									<li>Placas</li>
+									<li>Vigas</li>
+								</ul>
+							</li>
+							<li>Documento <span class="fragment" style="color:var(--red)" data-fragment-index="5">(1 mes)</span></li>
+						</ol>
+					</div>
+				</section>
+				<section data-auto-animate>
+					<div class="content-indicator">
+						<div class="content-indicator-item">
+							<a
+								data-id="not-animate"
+								class="hidden-link"
+								href="#/introduccion-title"
+								>Introducción
+							</a>
+						</div>
+						<div class="content-indicator-item">
+							<a
+								data-id="not-animate"
+								class="hidden-link"
+								href="#/metodos-title"
+								>Métodos
+							</a>
+						</div>
+						<div class="content-indicator-item selected-ci">
+							<a
+								data-id="not-animate"
+								class="hidden-link"
+								href="#/resultados-title"
+								>Resultados
+							</a>
+						</div>
+					</div>
+					<div class="slide">
+						<h4>Referencias</h4>
+						<div
+							style="
+								line-height: 2;
+								margin-left: 2em;
+								text-indent: -2em;
+								width: 85%;
+							"
+						>
+							<div class="csl-entry">
+								Eringen, A. C. (1972). Linear theory of nonlocal
+								elasticity and dispersion of plane waves.
+								<i
+									>International Journal of Engineering
+									Science</i
+								>, <i>10</i>(5), 425–435.
+								<a
+									href="https://doi.org/10.1016/0020-7225(72)90050-X"
+									>https://doi.org/10.1016/0020-7225(72)90050-X</a
+								>
+							</div>
+							<span
+								class="Z3988"
+								title="url_ver=Z39.88-2004&amp;ctx_ver=Z39.88-2004&amp;rfr_id=info%3Asid%2Fzotero.org%3A2&amp;rft_id=info%3Adoi%2F10.1016%2F0020-7225(72)90050-X&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.atitle=Linear%20theory%20of%20nonlocal%20elasticity%20and%20dispersion%20of%20plane%20waves&amp;rft.jtitle=International%20Journal%20of%20Engineering%20Science&amp;rft.stitle=International%20Journal%20of%20Engineering%20Science&amp;rft.volume=10&amp;rft.issue=5&amp;rft.aufirst=A.Cemal&amp;rft.aulast=Eringen&amp;rft.au=A.Cemal%20Eringen&amp;rft.date=1972-05&amp;rft.pages=425-435&amp;rft.spage=425&amp;rft.epage=435&amp;rft.issn=00207225&amp;rft.language=en"
+							></span>
+							<div class="csl-entry">
+								Eringen, A. C. (1983). On differential equations
+								of nonlocal elasticity and solutions of screw
+								dislocation and surface waves.
+								<i>Journal of Applied Physics</i>, <i>54</i>(9),
+								4703–4710.
+								<a href="https://doi.org/10.1063/1.332803"
+									>https://doi.org/10.1063/1.332803</a
+								>
+							</div>
+							<span
+								class="Z3988"
+								title="url_ver=Z39.88-2004&amp;ctx_ver=Z39.88-2004&amp;rfr_id=info%3Asid%2Fzotero.org%3A2&amp;rft_id=info%3Adoi%2F10.1063%2F1.332803&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.atitle=On%20differential%20equations%20of%20nonlocal%20elasticity%20and%20solutions%20of%20screw%20dislocation%20and%20surface%20waves&amp;rft.jtitle=Journal%20of%20Applied%20Physics&amp;rft.stitle=Journal%20of%20Applied%20Physics&amp;rft.volume=54&amp;rft.issue=9&amp;rft.aufirst=A.%20Cemal&amp;rft.aulast=Eringen&amp;rft.au=A.%20Cemal%20Eringen&amp;rft.date=1983-09&amp;rft.pages=4703-4710&amp;rft.spage=4703&amp;rft.epage=4710&amp;rft.issn=0021-8979%2C%201089-7550&amp;rft.language=en"
+							></span>
+							<div class="csl-entry">
+								Eringen, A. C., &amp; Edelen, D. G. B. (1972).
+								On nonlocal elasticity.
+								<i
+									>International Journal of Engineering
+									Science</i
+								>, <i>10</i>(3), 233–248.
+								<a
+									href="https://doi.org/10.1016/0020-7225(72)90039-0"
+									>https://doi.org/10.1016/0020-7225(72)90039-0</a
+								>
+							</div>
+							<span
+								class="Z3988"
+								title="url_ver=Z39.88-2004&amp;ctx_ver=Z39.88-2004&amp;rfr_id=info%3Asid%2Fzotero.org%3A2&amp;rft_id=info%3Adoi%2F10.1016%2F0020-7225(72)90039-0&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.atitle=On%20nonlocal%20elasticity&amp;rft.jtitle=International%20Journal%20of%20Engineering%20Science&amp;rft.volume=10&amp;rft.issue=3&amp;rft.aufirst=A.Cemal&amp;rft.aulast=Eringen&amp;rft.au=A.Cemal%20Eringen&amp;rft.au=D.G.B.%20Edelen&amp;rft.date=1972-03&amp;rft.pages=233-248&amp;rft.spage=233&amp;rft.epage=248&amp;rft.issn=00207225"
+							></span>
+							<div class="csl-entry">
+								Fleck, N. A., Muller, G. M., Ashby, M. F., &amp;
+								Hutchinson, J. W. (1994). Strain gradient
+								plasticity: Theory and experiment.
+								<i>Acta Metallurgica et Materialia</i>,
+								<i>42</i>(2), 475–487.
+								<a
+									href="https://doi.org/10.1016/0956-7151(94)90502-9"
+									>https://doi.org/10.1016/0956-7151(94)90502-9</a
+								>
+							</div>
+							<span
+								class="Z3988"
+								title="url_ver=Z39.88-2004&amp;ctx_ver=Z39.88-2004&amp;rfr_id=info%3Asid%2Fzotero.org%3A2&amp;rft_id=info%3Adoi%2F10.1016%2F0956-7151(94)90502-9&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.atitle=Strain%20gradient%20plasticity%3A%20Theory%20and%20experiment&amp;rft.jtitle=Acta%20Metallurgica%20et%20Materialia&amp;rft.stitle=Acta%20Metallurgica%20et%20Materialia&amp;rft.volume=42&amp;rft.issue=2&amp;rft.aufirst=N.A.&amp;rft.aulast=Fleck&amp;rft.au=N.A.%20Fleck&amp;rft.au=G.M.%20Muller&amp;rft.au=M.F.%20Ashby&amp;rft.au=J.W.%20Hutchinson&amp;rft.date=1994-02&amp;rft.pages=475-487&amp;rft.spage=475&amp;rft.epage=487&amp;rft.issn=09567151&amp;rft.language=en"
+							></span>
+							<div class="csl-entry">
+								Ghorbani, K., Rajabpour, A., &amp; Ghadiri, M.
+								(2021). Determination of carbon nanotubes
+								size-dependent parameters: Molecular dynamics
+								simulation and nonlocal strain gradient
+								continuum shell model.
+								<i
+									>Mechanics Based Design of Structures and
+									Machines</i
+								>, <i>49</i>(1), 103–120.
+								<a
+									href="https://doi.org/10.1080/15397734.2019.1671863"
+									>https://doi.org/10.1080/15397734.2019.1671863</a
+								>
+							</div>
+							<span
+								class="Z3988"
+								title="url_ver=Z39.88-2004&amp;ctx_ver=Z39.88-2004&amp;rfr_id=info%3Asid%2Fzotero.org%3A2&amp;rft_id=info%3Adoi%2F10.1080%2F15397734.2019.1671863&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.atitle=Determination%20of%20carbon%20nanotubes%20size-dependent%20parameters%3A%20molecular%20dynamics%20simulation%20and%20nonlocal%20strain%20gradient%20continuum%20shell%20model&amp;rft.jtitle=Mechanics%20Based%20Design%20of%20Structures%20and%20Machines&amp;rft.stitle=Mechanics%20Based%20Design%20of%20Structures%20and%20Machines&amp;rft.volume=49&amp;rft.issue=1&amp;rft.aufirst=Khashayar&amp;rft.aulast=Ghorbani&amp;rft.au=Khashayar%20Ghorbani&amp;rft.au=Ali%20Rajabpour&amp;rft.au=Majid%20Ghadiri&amp;rft.date=2021-01-02&amp;rft.pages=103-120&amp;rft.spage=103&amp;rft.epage=120&amp;rft.issn=1539-7734%2C%201539-7742&amp;rft.language=en"
+							></span>
+							<div class="csl-entry">
+								Lam, D. C. C., Yang, F., Chong, A. C. M., Wang,
+								J., &amp; Tong, P. (2003). Experiments and
+								theory in strain gradient elasticity.
+								<i
+									>Journal of the Mechanics and Physics of
+									Solids</i
+								>, <i>51</i>(8), 1477–1508.
+								<a
+									href="https://doi.org/10.1016/S0022-5096(03)00053-X"
+									>https://doi.org/10.1016/S0022-5096(03)00053-X</a
+								>
+							</div>
+							<span
+								class="Z3988"
+								title="url_ver=Z39.88-2004&amp;ctx_ver=Z39.88-2004&amp;rfr_id=info%3Asid%2Fzotero.org%3A2&amp;rft_id=info%3Adoi%2F10.1016%2Fj.physleta.2014.09.037&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.atitle=Free%20vibration%20analysis%20of%20multi-layer%20graphene%20nanoribbons%20incorporating%20interlayer%20shear%20effect%20via%20molecular%20dynamics%20simulations%20and%20nonlocal%20elasticity&amp;rft.jtitle=Physics%20Letters%20A&amp;rft.stitle=Physics%20Letters%20A&amp;rft.volume=378&amp;rft.issue=44&amp;rft.aufirst=Reza&amp;rft.aulast=Nazemnezhad&amp;rft.au=Reza%20Nazemnezhad&amp;rft.au=Shahrokh%20Hosseini-Hashemi&amp;rft.date=2014-09&amp;rft.pages=3225-3232&amp;rft.spage=3225&amp;rft.epage=3232&amp;rft.issn=03759601&amp;rft.language=en"
+							></span>
+						</div>
+					</div>
+				</section>
+				<section data-auto-animate>
+					<div class="content-indicator">
+						<div class="content-indicator-item">
+							<a
+								data-id="not-animate"
+								class="hidden-link"
+								href="#/introduccion-title"
+								>Introducción
+							</a>
+						</div>
+						<div class="content-indicator-item">
+							<a
+								data-id="not-animate"
+								class="hidden-link"
+								href="#/metodos-title"
+								>Métodos
+							</a>
+						</div>
+						<div class="content-indicator-item selected-ci">
+							<a
+								data-id="not-animate"
+								class="hidden-link"
+								href="#/resultados-title"
+								>Resultados
+							</a>
+						</div>
+					</div>
+					<div class="slide">
+						<h4>Referencias</h4>
+						<div
+							style="
+								line-height: 2;
+								margin-left: 2em;
+								text-indent: -2em;
+								width: 85%;
+							"
+						>
+							<div class="csl-entry">
+								Naghinejad, M., &amp; Ovesy, H. R. (2018). Free
+								vibration characteristics of nanoscaled beams
+								based on nonlocal integral elasticity theory.
+								<i>Journal of Vibration and Control</i>,
+								<i>24</i>(17), 3974–3988.
+								<a
+									href="https://doi.org/10.1177/1077546317717867"
+									>https://doi.org/10.1177/1077546317717867</a
+								>
+							</div>
+							<div class="csl-entry">
+								Nguyen, N.-T., Kim, N.-I., &amp; Lee, J. (2015).
+								Mixed finite element analysis of nonlocal
+								Euler–Bernoulli nanobeams.
+								<i>Finite Elements in Analysis and Design</i>,
+								<i>106</i>, 65–72.
+								<a
+									href="https://doi.org/10.1016/j.finel.2015.07.012"
+									>https://doi.org/10.1016/j.finel.2015.07.012</a
+								>
+							</div>
+							<span
+								class="Z3988"
+								title="url_ver=Z39.88-2004&amp;ctx_ver=Z39.88-2004&amp;rfr_id=info%3Asid%2Fzotero.org%3A2&amp;rft_id=info%3Adoi%2F10.1016%2Fj.finel.2015.07.012&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.atitle=Mixed%20finite%20element%20analysis%20of%20nonlocal%20Euler%E2%80%93Bernoulli%20nanobeams&amp;rft.jtitle=Finite%20Elements%20in%20Analysis%20and%20Design&amp;rft.stitle=Finite%20Elements%20in%20Analysis%20and%20Design&amp;rft.volume=106&amp;rft.aufirst=Ngoc-Tuan&amp;rft.aulast=Nguyen&amp;rft.au=Ngoc-Tuan%20Nguyen&amp;rft.au=Nam-Il%20Kim&amp;rft.au=Jaehong%20Lee&amp;rft.date=2015-11&amp;rft.pages=65-72&amp;rft.spage=65&amp;rft.epage=72&amp;rft.issn=0168874X&amp;rft.language=en"
+							></span>
+							<div class="csl-entry">
+								Polizzotto, C. (2001). Nonlocal elasticity and
+								related variational principles.
+								<i
+									>International Journal of Solids and
+									Structures</i
+								>, <i>38</i>(42–43), 7359–7380.
+								<a
+									href="https://doi.org/10.1016/S0020-7683(01)00039-7"
+									>https://doi.org/10.1016/S0020-7683(01)00039-7</a
+								>
+							</div>
+							<span
+								class="Z3988"
+								title="url_ver=Z39.88-2004&amp;ctx_ver=Z39.88-2004&amp;rfr_id=info%3Asid%2Fzotero.org%3A2&amp;rft_id=info%3Adoi%2F10.1016%2FS0020-7683(01)00039-7&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.atitle=Nonlocal%20elasticity%20and%20related%20variational%20principles&amp;rft.jtitle=International%20Journal%20of%20Solids%20and%20Structures&amp;rft.stitle=International%20Journal%20of%20Solids%20and%20Structures&amp;rft.volume=38&amp;rft.issue=42-43&amp;rft.aufirst=Castrenze&amp;rft.aulast=Polizzotto&amp;rft.au=Castrenze%20Polizzotto&amp;rft.date=2001-10&amp;rft.pages=7359-7380&amp;rft.spage=7359&amp;rft.epage=7380&amp;rft.issn=00207683&amp;rft.language=en"
+							></span>
+							<div class="csl-entry">
+								Ramirez, F. (2006).
+								<i
+									>VIBRATION OF NANOSTRUCTURES: FROM ATOMIC TO
+									CONTINUUM SCALES</i
+								>.
+							</div>
+							<span
+								class="Z3988"
+								title="url_ver=Z39.88-2004&amp;ctx_ver=Z39.88-2004&amp;rfr_id=info%3Asid%2Fzotero.org%3A2&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Abook&amp;rft.genre=report&amp;rft.btitle=VIBRATION%20OF%20NANOSTRUCTURES%3A%20FROM%20ATOMIC%20TO%20CONTINUUM%20SCALES&amp;rft.aufirst=Fernando&amp;rft.aulast=Ramirez&amp;rft.au=Fernando%20Ramirez&amp;rft.date=2006"
+							></span>
+							<div class="csl-entry">
+								Sahmani, S., &amp; Fattahi, A. M. (2018).
+								Development of efficient size-dependent plate
+								models for axial buckling of single-layered
+								graphene nanosheets using molecular dynamics
+								simulation. <i>Microsystem Technologies</i>,
+								<i>24</i>(2), 1265–1277.
+								<a
+									href="https://doi.org/10.1007/s00542-017-3497-3"
+									>https://doi.org/10.1007/s00542-017-3497-3</a
+								>
+							</div>
+							<span
+								class="Z3988"
+								title="url_ver=Z39.88-2004&amp;ctx_ver=Z39.88-2004&amp;rfr_id=info%3Asid%2Fzotero.org%3A2&amp;rft_id=info%3Adoi%2F10.1007%2Fs00542-017-3497-3&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.atitle=Development%20of%20efficient%20size-dependent%20plate%20models%20for%20axial%20buckling%20of%20single-layered%20graphene%20nanosheets%20using%20molecular%20dynamics%20simulation&amp;rft.jtitle=Microsystem%20Technologies&amp;rft.stitle=Microsyst%20Technol&amp;rft.volume=24&amp;rft.issue=2&amp;rft.aufirst=S.&amp;rft.aulast=Sahmani&amp;rft.au=S.%20Sahmani&amp;rft.au=A.%20M.%20Fattahi&amp;rft.date=2018-02&amp;rft.pages=1265-1277&amp;rft.spage=1265&amp;rft.epage=1277&amp;rft.issn=0946-7076%2C%201432-1858&amp;rft.language=en"
+							></span>
+							<div class="csl-entry">
+								Shariati, M., Azizi, B., Hosseini, M., &amp;
+								Shishesaz, M. (2021). On the calibration of size
+								parameters related to non-classical continuum
+								theories using molecular dynamics simulations.
+								<i
+									>International Journal of Engineering
+									Science</i
+								>, <i>168</i>, 103544.
+								<a
+									href="https://doi.org/10.1016/j.ijengsci.2021.103544"
+									>https://doi.org/10.1016/j.ijengsci.2021.103544</a
+								>
+							</div>
+							<span
+								class="Z3988"
+								title="url_ver=Z39.88-2004&amp;ctx_ver=Z39.88-2004&amp;rfr_id=info%3Asid%2Fzotero.org%3A2&amp;rft_id=info%3Adoi%2F10.1016%2Fj.ijengsci.2021.103544&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.atitle=On%20the%20calibration%20of%20size%20parameters%20related%20to%20non-classical%20continuum%20theories%20using%20molecular%20dynamics%20simulations&amp;rft.jtitle=International%20Journal%20of%20Engineering%20Science&amp;rft.stitle=International%20Journal%20of%20Engineering%20Science&amp;rft.volume=168&amp;rft.aufirst=Mojtaba&amp;rft.aulast=Shariati&amp;rft.au=Mojtaba%20Shariati&amp;rft.au=Babak%20Azizi&amp;rft.au=Mohammad%20Hosseini&amp;rft.au=Mohammad%20Shishesaz&amp;rft.date=2021-11&amp;rft.pages=103544&amp;rft.issn=00207225&amp;rft.language=en"
+							></span>
+						</div>
+					</div>
+				</section>
+				<section data-auto-animate>
+					<div class="content-indicator">
+						<div class="content-indicator-item">
+							<a
+								data-id="not-animate"
+								class="hidden-link"
+								href="#/introduccion-title"
+								>Introducción
+							</a>
+						</div>
+						<div class="content-indicator-item">
+							<a
+								data-id="not-animate"
+								class="hidden-link"
+								href="#/metodos-title"
+								>Métodos
+							</a>
+						</div>
+						<div class="content-indicator-item selected-ci">
+							<a
+								data-id="not-animate"
+								class="hidden-link"
+								href="#/resultados-title"
+								>Resultados
+							</a>
+						</div>
+					</div>
+					<div class="slide">
+						<h4>Referencias</h4>
+						<div
+							style="
+								line-height: 2;
+								margin-left: 2em;
+								text-indent: -2em;
+								width: 85%;
+							"
+						>
+							<div class="csl-entry">
+								Stölken, J. S., &amp; Evans, A. G. (1998). A
+								microbend test method for measuring the
+								plasticity length scale. <i>Acta Materialia</i>,
+								<i>46</i>(14), 5109–5115.
+								<a
+									href="https://doi.org/10.1016/S1359-6454(98)00153-0"
+									>https://doi.org/10.1016/S1359-6454(98)00153-0</a
+								>
+							</div>
+							<span
+								class="Z3988"
+								title="url_ver=Z39.88-2004&amp;ctx_ver=Z39.88-2004&amp;rfr_id=info%3Asid%2Fzotero.org%3A2&amp;rft_id=info%3Adoi%2F10.1016%2FS1359-6454(98)00153-0&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.atitle=A%20microbend%20test%20method%20for%20measuring%20the%20plasticity%20length%20scale&amp;rft.jtitle=Acta%20Materialia&amp;rft.stitle=Acta%20Materialia&amp;rft.volume=46&amp;rft.issue=14&amp;rft.aufirst=J.S.&amp;rft.aulast=St%C3%B6lken&amp;rft.au=J.S.%20St%C3%B6lken&amp;rft.au=A.G.%20Evans&amp;rft.date=1998-09&amp;rft.pages=5109-5115&amp;rft.spage=5109&amp;rft.epage=5115&amp;rft.issn=13596454&amp;rft.language=en"
+							></span>
+							<div class="csl-entry">
+								Wang, Y. B., Zhu, X. W., &amp; Dai, H. H.
+								(2016). Exact solutions for the static bending
+								of Euler-Bernoulli beams using Eringen’s
+								two-phase local/nonlocal model.
+								<i>AIP Advances</i>, <i>6</i>(8).
+								<a href="https://doi.org/10.1063/1.4961695"
+									>https://doi.org/10.1063/1.4961695</a
+								>
+							</div>
+							<span
+								class="Z3988"
+								title="url_ver=Z39.88-2004&amp;ctx_ver=Z39.88-2004&amp;rfr_id=info%3Asid%2Fzotero.org%3A2&amp;rft_id=info%3Adoi%2F10.1063%2F1.4961695&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.atitle=Exact%20solutions%20for%20the%20static%20bending%20of%20Euler-Bernoulli%20beams%20using%20Eringen's%20two-phase%20local%2Fnonlocal%20model&amp;rft.jtitle=AIP%20Advances&amp;rft.volume=6&amp;rft.issue=8&amp;rft.aufirst=Y.%20B.&amp;rft.aulast=Wang&amp;rft.au=Y.%20B.%20Wang&amp;rft.au=X.%20W.%20Zhu&amp;rft.au=H.%20H.%20Dai&amp;rft.date=2016&amp;rft.issn=21583226"
+							></span>
+						</div>
+					</div>
+				</section>
+			</div>
+		</div>
+		<script src="plugin/math/math.js" type="text/javascript" s></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/zoom/zoom.js"></script>
+		<script src="js/reveal.js" type="text/javascript"></script>
+		<script src="js/main.js" type="text/javascript"></script>
+		<script src="socket.io/socket.io.js"></script>
+		<script src="node_modules/reveal-notes-server/client.js"></script>
+	</body>
+</html>
