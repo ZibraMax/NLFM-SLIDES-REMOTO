@@ -24,6 +24,7 @@ const config = {
 	viewDistance: 5,
 	touch: false,
 	navigationMode: "linear",
+	totalTime: 15 * 60,
 	plugins: [RevealMath.KaTeX, RevealNotes, RevealZoom],
 };
 Reveal.initialize(config);
