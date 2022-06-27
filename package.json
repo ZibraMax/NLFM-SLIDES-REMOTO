@@ -18,5 +18,10 @@
 	"bugs": {
 		"url": "https://github.com/ZibraMax/NLFM-SLIDES-REMOTO/issues"
 	},
-	"homepage": "https://github.com/ZibraMax/NLFM-SLIDES-REMOTO#readme"
+	"homepage": "https://github.com/ZibraMax/NLFM-SLIDES-REMOTO#readme",
+	"dependencies": {
+		"express": "~4.17.1",
+		"mustache": "~4.0.0",
+		"socket.io": "~2.3.0"
+	}
 }
